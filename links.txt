@@ -9,6 +9,6 @@ https://programmizm.sourceforge.io/blog/2011/a-practical-implementation-of-kd-tr
 https://www.codeproject.com/Articles/18113/KD-Tree-Searching-in-N-dimensions-Part-I
 https://stackoverflow.com/questions/15124900/why-are-kd-trees-so-damn-slow-for-nearest-neighbor-search-in-point-sets
 https://rosettacode.org/wiki/K-d_tree
-
+https://github.com/IvanKamynin/KDTree/tree/master/KD3DTree
 check
 https://stackoverflow.com/questions/7183949/range-minimum-maximum-query?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
