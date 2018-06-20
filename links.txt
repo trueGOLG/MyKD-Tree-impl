@@ -1,0 +1,14 @@
+https://books.google.co.jp/books?id=b3ujBQAAQBAJ&pg=PA5&hl=ru&source=gbs_selected_pages&cad=2#v=onepage&q&f=false
+
+http://www.alglib.net/other/nearestneighbors.php
+
+http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
+http://apps.nrbook.com/empanel/index.html#
+https://programmizm.sourceforge.io/blog/2011/a-practical-implementation-of-kd-trees
+
+https://www.codeproject.com/Articles/18113/KD-Tree-Searching-in-N-dimensions-Part-I
+https://stackoverflow.com/questions/15124900/why-are-kd-trees-so-damn-slow-for-nearest-neighbor-search-in-point-sets
+https://rosettacode.org/wiki/K-d_tree
+
+check
+https://stackoverflow.com/questions/7183949/range-minimum-maximum-query?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
