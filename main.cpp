@@ -30,7 +30,7 @@ int main() {
 
 int splitDimmension(vector<int> plane) {
 
-    
+
 
 
     return 0;
