@@ -13,8 +13,8 @@ vector<vector<int>> initialData;
 
 // tools
 
-// TODO: Provide alternate splitting methods by setting different option argument
-int splitDimmension(vector<int> dimensions);
+// TODO: Provide alternate splitting methods by setting different option argument in mode
+int splitDimmension(int mode = 1, vector<int> dimensions = vector<int>());
 
 void kdTreeBuilder(vector<vector<int>> data);
 
@@ -29,7 +29,7 @@ int main() {
     return 0;
 }
 
-int splitDimmension(vector<int> plane) {
+int splitDimmension(int mode, vector<int> plane) {
 
 
 
