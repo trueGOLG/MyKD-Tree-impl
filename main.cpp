@@ -13,6 +13,7 @@ vector<vector<int>> initialData;
 
 // tools
 
+// TODO: Provide alternate splitting methods by setting different option argument
 int splitDimmension(vector<int> dimensions);
 
 void kdTreeBuilder(vector<vector<int>> data);
