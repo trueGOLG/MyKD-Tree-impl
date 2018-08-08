@@ -28,7 +28,7 @@ vector<vector<int>> initialData(11, vector<int>(Dimensions));
 //vector<vector<int>> column(10, vector<int>(2));
 
 vector<pair<int,int>> column;
-vector<vector<pair<int,int>>> serviceData;
+vector<vector<pair<int,int>>> serviceData(11, vector<pair<int,int>>(Dimensions)); // pair: original index / value
 vector<int> medians;
 // Minimal depth sould correspond to number of dimenstions
 int depth = Dimensions;
@@ -59,15 +59,13 @@ void addNode(vector<int> newNode);
 
 // void preSort(vector<vector<int>> data);
 void preSort();
-void preSort2();
+void ConvertToServiceDS();
 void Print2();
+void Print3();
 void getMedians();
 // Utils
 
 void PrintVector();
-
-
-
 
 int dim = 0;
 
@@ -75,6 +73,8 @@ int median = 0;
 
 
 int main() {
+
+
     Dimensions = 4;
     vector<int> test(8);
     //--------
@@ -92,16 +92,19 @@ int main() {
             //tmp.at(j) = rand_r(time(NULL));
         }
         initialData.at(i) = tmp;
-
     }
 
+
+    //preSort();
+    cout << "original data: " << endl;
+    PrintVector();
+    cout << "new data " << endl;
     //preSort();
     //PrintVector();
-    preSort2();
+    ConvertToServiceDS();
     Print2();
     return 0;
 }
-
 
 /*
 void preSort(vector<vector<int>> data) {
@@ -111,38 +114,61 @@ void preSort(vector<vector<int>> data) {
 }
 */
 
-// Driver function to sort the vector elements
-// by second element of pairs
 
 
+// vector<pair<int,int>> column;
+// test method
 void preSort() {
-    for (int i = 0; i < initialData.size(); ++i) {
-        std::sort(initialData[i].begin(), initialData[i].end());
-    }
 
-    for (int j = 0; j < initialData.size(); ++j) {
-        //column.push_back(make_pair(j,initialData[j][0])); // plane instead of 0
-        column.emplace_back(make_pair(j,initialData[j][0]));
-    }
-    //  remove sortbysec to sort by first element
-    std::sort(column.begin(), column.end(), sortbysec);
-
-    median = column.at(column.size()/2).second;
-
-}
-
-// Delete this coments
-// vector<vector<pair<int,int>>> serviceData;
-
-void preSort2() {
     for (int i = 0; i < initialData.size(); ++i) {
         vector<pair<int,int>> tmp;
-        for (int j = 0; j < Dimensions; ++j) {
-            tmp.emplace_back(make_pair(i, initialData.at(i).at(j))); // first origin Index , second - value
+        for (int j = 0; j < initialData[0].size(); ++j) {
+            tmp.emplace_back(make_pair(i, initialData[i][j]));
         }
         serviceData.emplace_back(tmp);
     }
+
+    std::sort(serviceData.begin(), serviceData.end(),
+        [](const vector<pair<int,int>> &a, const vector<pair<int,int>> &b) -> bool {
+            return (a[0].second < b[0].second);
+        });
+    /*
+    for (int j = 0; j < initialData.size(); ++j) {
+        column.emplace_back(make_pair(j,initialData[j][0])); // plane instead of 0
+    }
+    //  remove sortbysec to sort by first element
+    std::sort(column.begin(), column.end(), sortbysec);
+    median = column.at(column.size()/2).second;
+    */
 }
+
+void ConvertToServiceDS() {
+    // TODO: there are should be way to convert in more elegant and efficient manner
+
+    for (int i = 0; i < initialData[0].size(); ++i) {
+        vector<pair<int,int>> col;
+        for (int j = 0; j < initialData.size(); ++j) {
+            col.emplace_back(make_pair(j, initialData[j][i]));
+        }
+        std::sort(col.begin(), col.end(),
+        [](const pair<int,int> &a, const pair<int,int> &b) -> bool {
+            return (a.second < b.second);
+        });
+
+        for (int line = 0; line < col.size(); ++line) {
+            serviceData[line].emplace_back(col[line]);
+        }
+    }
+}
+
+
+// Driver function to sort the vector elements
+// by second element of pairs
+bool sortbysec(const pair<int,int> &a, const pair<int,int> &b)
+{
+    return (a.second < b.second);
+}
+
 
 // Delete this coments
 // vector<pair<int,int>> column;
@@ -179,7 +205,6 @@ int splitDimmension(int plane, int depth) {
     for (int space = 0; space < depth; ++space) {
 
     }
-
     for (int j = 0; j < initialData.size(); ++j) {
         column.emplace_back(make_pair(j,initialData[j][0]));
     }
@@ -193,19 +218,27 @@ int splitDimmension(int plane, int depth) {
 
 void Print2() {
     for (int i = 0; i < serviceData.size(); ++i) {
-        cout<< "i: "<< i;
         for (int j = 0; j < serviceData[j].size(); ++j) {
-            cout << " V: " << serviceData[i][j].second;
+            if (serviceData[i][j].first < 10) {
+                cout << "  s: " << serviceData[i][j].first << " Val: " << serviceData[i][j].second << "\5";
+            } else {
+                cout << " s: " << serviceData[i][j].first << " Val: " << serviceData[i][j].second << "\5";
+            }
+
         }
         cout  << endl;
     }
-
+}
+// without index
+void Print3() {
+    for (int i = 0; i < serviceData.size(); ++i) {
+        for (int j = 0; j < serviceData[j].size(); ++j) {
+            cout << serviceData[i][j].second << " ";
+        }
+        cout << endl;
+    }
 }
 
-bool sortbysec(const pair<int,int> &a, const pair<int,int> &b)
-{
-    return (a.second < b.second);
-}
 
 void PrintVector() {
     for (int i = 0; i < initialData.size(); ++i) {
@@ -214,6 +247,7 @@ void PrintVector() {
         }
         cout << " <- Index " << i << endl;
     }
+    /*
     cout << "--------------" << endl;
     cout << "0 Dimension" << endl;
     cout << "--------------" << endl;
@@ -225,11 +259,11 @@ void PrintVector() {
 
     cout << "--------------" << endl;
     cout << "median = " << median << endl;
+    */
 
 }
 
 void BuilderUtil(vector<vector<int>> data, int depth, int dimension) {
-
 
 
 }
@@ -238,9 +272,6 @@ void kdTreeBuilder(vector<vector<int>> data, int depth) {
     int dep = 0;
     int plane = 0;
     //int median = splitDimmension(plane);
-
-
-
 }
 
 
