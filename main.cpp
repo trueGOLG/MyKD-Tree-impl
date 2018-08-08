@@ -29,7 +29,7 @@ vector<vector<int>> initialData(11, vector<int>(Dimensions));
 
 vector<pair<int,int>> column;
 vector<vector<pair<int,int>>> serviceData(11, vector<pair<int,int>>(Dimensions)); // pair: original index / value
-vector<int> medians;
+vector<int> medians(Dimensions);
 // Minimal depth sould correspond to number of dimenstions
 int depth = Dimensions;
 
@@ -62,26 +62,22 @@ void preSort();
 void ConvertToServiceDS();
 void Print2();
 void Print3();
-void getMedians();
+void getMedians(int boundA, int boundB);
 // Utils
 
 void PrintVector();
 
 int dim = 0;
 
-int median = 0;
-
-
 int main() {
 
-
+    // TODO: Clean up code
     Dimensions = 4;
     vector<int> test(8);
-    //--------
+    //-------- Generate test data structure
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> dis(10, 99);
-
     //--------
     cout << "Big Fantastic Start" << endl;
 
@@ -89,13 +85,9 @@ int main() {
         vector<int> tmp(Dimensions);
         for (int j = 0; j < tmp.size(); ++j) {
             tmp.at(j) = dis(gen);
-            //tmp.at(j) = rand_r(time(NULL));
         }
         initialData.at(i) = tmp;
     }
-
-
-    //preSort();
     cout << "original data: " << endl;
     PrintVector();
     cout << "new data " << endl;
@@ -103,18 +95,10 @@ int main() {
     //PrintVector();
     ConvertToServiceDS();
     Print2();
+    getMedians(0, serviceData.size());
+    getMedians(0, 5);
     return 0;
 }
-
-/*
-void preSort(vector<vector<int>> data) {
-    for (int i = 0; i < data.size(); ++i) {
-        std::sort(data[i].begin(),data[i].end());
-    }
-}
-*/
-
-
 
 // vector<pair<int,int>> column;
 // test method
@@ -161,7 +145,6 @@ void ConvertToServiceDS() {
     }
 }
 
-
 // Driver function to sort the vector elements
 // by second element of pairs
 bool sortbysec(const pair<int,int> &a, const pair<int,int> &b)
@@ -173,7 +156,6 @@ bool sortbysec(const pair<int,int> &a, const pair<int,int> &b)
 // Delete this coments
 // vector<pair<int,int>> column;
 // vector<vector<pair<int,int>>> serviceData;
-
 /*
  vector<
     [0] vector<[0]pair<int,int>, [1] pair<int,int>, [2] pair<int,int> ...  [j] pair<int,int> >,
@@ -189,14 +171,19 @@ bool sortbysec(const pair<int,int> &a, const pair<int,int> &b)
     >
 
  */
-void getMedians() {
-    for (int i = 0; i < serviceData.size(); ++i) {
-        for (int j = 0; j < serviceData[0].size(); ++j) {
-            std::sort(serviceData[i].begin(), serviceData[i].end(), sortbysec);
-        }
-        // TODO: Put statement as argument of medians.push_back()
-        int med = serviceData.at(serviceData.size()/2)[i].second;
-        medians.push_back(med);
+
+void getMedians(int boundA, int boundB) {
+    // TODO: Keep in mind that there are can be other plain splitting strategies
+    medians.clear();
+    for (int plane = 0; plane < serviceData[0].size(); ++plane) {
+        int med = serviceData.at((boundA+boundB)/2)[plane].second;
+        medians.emplace_back(med);
+    }
+
+    // for tests
+    cout << "medians" << endl;
+    for (int j = 0; j < medians.size(); ++j) {
+        cout << medians[j] << " ";
     }
 }
 
@@ -211,7 +198,7 @@ int splitDimmension(int plane, int depth) {
     //  remove sortbysec to sort by first element
     std::sort(column.begin(), column.end(), sortbysec);
 
-    median = column.at(column.size()/2).second;
+    //median = column.at(column.size()/2).second;
 
     return 0; // Index of median
 }
