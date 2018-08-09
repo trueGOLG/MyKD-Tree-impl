@@ -62,7 +62,8 @@ void preSort();
 void ConvertToServiceDS();
 void Print2();
 void Print3();
-void getMedians(int boundA, int boundB);
+pair<int,int> getMedians(int boundA, int boundB, int plane);
+
 // Utils
 
 void PrintVector();
@@ -172,20 +173,17 @@ bool sortbysec(const pair<int,int> &a, const pair<int,int> &b)
 
  */
 
-void getMedians(int boundA, int boundB) {
+pair<int,int> getMedians(int boundA, int boundB, int plane) {
     // TODO: Keep in mind that there are can be other plain splitting strategies
-    medians.clear();
-    for (int plane = 0; plane < serviceData[0].size(); ++plane) {
-        int med = serviceData.at((boundA+boundB)/2)[plane].second;
-        medians.emplace_back(med);
-    }
-
-    // for tests
-    cout << "medians" << endl;
-    for (int j = 0; j < medians.size(); ++j) {
-        cout << medians[j] << " ";
-    }
+    return serviceData.at((boundA+boundB)/2)[plane];
 }
+
+void kdTreeBuilder(vector<vector<int>> data, int depth) {
+    int dep = 0;
+    int plane = 0;
+    
+}
+
 
 int splitDimmension(int plane, int depth) {
 
@@ -255,11 +253,6 @@ void BuilderUtil(vector<vector<int>> data, int depth, int dimension) {
 
 }
 
-void kdTreeBuilder(vector<vector<int>> data, int depth) {
-    int dep = 0;
-    int plane = 0;
-    //int median = splitDimmension(plane);
-}
 
 
 
