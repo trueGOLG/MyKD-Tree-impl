@@ -11,7 +11,7 @@ using namespace std;
  * TODO list
  * A) KD-tree building
  *  1) Implement median search mechanism Done
- *  2)
+ *  2) Apropriate Tree bulding process
  *
  * B) Range search
  *
@@ -32,16 +32,15 @@ vector<vector<pair<int,int>>> serviceData(11, vector<pair<int,int>>(Dimensions))
 vector<int> medians(Dimensions);
 // Minimal depth sould correspond to number of dimenstions
 int depth = Dimensions;
+int heightOfTree(int n);
 
 struct Node {
-    int index;
-    int originalIndex;
-    Node *parent;
+    pair<int,int> data;
     Node *left;
-    Node *righ;
+    Node *right;
 };
 
-vector<Node> Tree;
+vector<Node> kdTree;
 
 
 // Tools
@@ -53,7 +52,7 @@ bool sortbysec(const pair<int,int> &a, const pair<int,int> &b);
 
 int splitDimmension(int plane, int depth);
 
-void kdTreeBuilder(vector<vector<int>> data, int depth);
+Node kdTreeBuilder(int depth, int plane, int a, int b);
 
 void addNode(vector<int> newNode);
 
@@ -64,6 +63,7 @@ void Print2();
 void Print3();
 pair<int,int> getMedians(int boundA, int boundB, int plane);
 
+
 // Utils
 
 void PrintVector();
@@ -71,7 +71,6 @@ void PrintVector();
 int dim = 0;
 
 int main() {
-
     // TODO: Clean up code
     Dimensions = 4;
     vector<int> test(8);
@@ -96,8 +95,17 @@ int main() {
     //PrintVector();
     ConvertToServiceDS();
     Print2();
-    getMedians(0, serviceData.size());
-    getMedians(0, 5);
+    int a = 0;
+    int b = serviceData.size();
+    /*
+    for (int k = 0; k < Dimensions; ++k) {
+        pair<int, int> res = getMedians(0, serviceData.size(), k);
+        cout << res.second << " " ;
+    }
+    pair<int, int> res = getMedians(a, b, 0);
+    cout << "index: " << res.first << " value: " << res.second << " ";
+    */
+    kdTreeBuilder(Dimensions, 0, a, b);
     return 0;
 }
 
@@ -172,19 +180,39 @@ bool sortbysec(const pair<int,int> &a, const pair<int,int> &b)
     >
 
  */
-
+// 122333221
 pair<int,int> getMedians(int boundA, int boundB, int plane) {
     // TODO: Keep in mind that there are can be other plain splitting strategies
     return serviceData.at((boundA+boundB)/2)[plane];
 }
 
-void kdTreeBuilder(vector<vector<int>> data, int depth) {
-    int dep = 0;
-    int plane = 0;
-    
+
+
+struct Node kdTreeBuilder(int depth, int plane, int a, int b) {
+    if (plane == Dimensions + 1) {
+        plane = 0;
+    }
+    if (!(a > b) || !(depth == 0)) {
+
+    }
+    Node node;
+    node.data.first = getMedians(a, b, plane).first;
+    node.data.second = getMedians(a, b, plane).second;
+    Node lNode = kdTreeBuilder(--depth, ++plane, a, node.data.second);
+    node.left = &lNode;
+    Node rNode = kdTreeBuilder(--depth, ++plane, node.data.second+1, b);
+    node.right = &rNode;
+    return node;
 }
 
 
+int heightOfTree(int n) {
+    int h = 1;
+    while (h < n) {
+        h *= 2;
+    }
+    return h;
+}
 int splitDimmension(int plane, int depth) {
 
     for (int space = 0; space < depth; ++space) {
