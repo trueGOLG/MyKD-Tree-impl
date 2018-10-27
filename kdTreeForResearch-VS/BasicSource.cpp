@@ -42,7 +42,7 @@ int depth = Dimensions;
 int heightOfTree(int n);
 
 struct Node {
-	pair<int, int> data;
+	pair<int, vector<int>> data;
 	Node *left;
 	Node *right;
 };
@@ -96,6 +96,7 @@ int main() {
 		}
 		initialData.at(i) = tmp;
 	}
+	
 	cout << "original data: " << endl;
 	PrintVector();
 	cout << "new data " << endl;
@@ -110,6 +111,11 @@ int main() {
 	int b = serviceData.size();	
 	kdTreeBuilder(Dimensions, 0, a, b);
 	*/
+	//cout << "result: " << med.first << " " << med.second[0];
+	vector<int> tree(serviceDataV2.size(), 0);
+	
+	
+	
 	cout << "Press Enter to continue..." << endl;
 	getchar();
 	return 0;
@@ -179,24 +185,13 @@ void printData() {
 	}
 }
 
-pair<int, vector<int>> Split(int startPoint, int endPoint, int dimension) {
-	/*
-	vector<pair<int, vector<int>>> column;
-	for (int i = startPoint; i < endPoint; i++)
-	{
-		column.emplace_back(make_pair(i, initialData[i][dimension]));
-	}
-	// Sort some range in particular dimension
-	std::sort(column.begin(), column.end(),
-		[](const pair<int, int> &a, const pair<int, int> &b) -> bool {
-		return (a.second < b.second);
-	});
-	*/
+pair<int, vector<int>> Split(int startPoint, int endPoint, int dimension) {	
 	std::sort(serviceDataV2.begin(), serviceDataV2.end(),
 		[&](const pair<int, vector<int>> &a, pair<int, vector<int>> &b) -> bool {
 		return (a.second[dimension] < b.second[dimension]);
 	});
-	// Test
+	// Test result of sorting
+	/*
 	for (int  j = 0; j < serviceDataV2.size(); j++)
 	{
 		cout << "index: " << serviceDataV2[j].first;
@@ -206,36 +201,21 @@ pair<int, vector<int>> Split(int startPoint, int endPoint, int dimension) {
 		}
 		cout << endl;
 	}
-	//
+	*/
 	return serviceDataV2[serviceDataV2.size() / 2];
+}
+
+void treeConstructor() {
+	
 }
 
 // Driver function to sort the vector elements
 // by second element of pairs
+
 bool sortbysec(const pair<int, int> &a, const pair<int, int> &b)
 {
 	return (a.second < b.second);
 }
-
-
-// Delete this coments
-// vector<pair<int,int>> column;
-// vector<vector<pair<int,int>>> serviceData;
-/*
-vector<
-[0] vector<[0]pair<int,int>, [1] pair<int,int>, [2] pair<int,int> ...  [j] pair<int,int> >,
-
-[1] vector<[0]pair<int,int>, [1] pair<int,int>, [2] pair<int,int> ...  [j] pair<int,int> >,
-
-[2] vector<[0]pair<int,int>, [1] pair<int,int>, [2] pair<int,int> ...  [j] pair<int,int> >,
-.
-.
-.
-[i] vector<[0]pair<int,int>, [1] pair<int,int>, [2] pair<int,int> ...  [j] pair<int,int> >
-
->
-
-*/
 
 // Very basic technic for median
 pair<int, int> getMedians(int boundA, int boundB, int plane) {
@@ -244,7 +224,7 @@ pair<int, int> getMedians(int boundA, int boundB, int plane) {
 }
 
 
-
+/*
 std::optional<Node> kdTreeBuilder(int depth, int plane, int a, int b) {
 	if (plane == Dimensions + 1) {
 		plane = 0;
@@ -264,7 +244,7 @@ std::optional<Node> kdTreeBuilder(int depth, int plane, int a, int b) {
 	std::optional<Node> rNode = kdTreeBuilder(depth - 1, plane + 1, node.data.second + 1, b);
 
 	return node;
-}
+}*/
 
 
 int heightOfTree(int n) {
@@ -274,7 +254,7 @@ int heightOfTree(int n) {
 	}
 	return h;
 }
-
+// old
 int splitDimmension(int plane, int depth) {
 
 	for (int space = 0; space < depth; ++space) {
